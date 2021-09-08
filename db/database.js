@@ -1,0 +1,1 @@
+'mongodb+srv://texteditor:<password>@cluster0.2kqjd.mongodb.net/myFirstDatabase?retryWrites=true&w=majority'
