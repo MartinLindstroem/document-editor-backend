@@ -3,11 +3,17 @@ const cors = require('cors');
 const morgan = require('morgan');
 
 const app = express();
-const port = 1337;
+const port = process.env.PORT || 1337;
 
 const index = require('./routes/index');
 const hello = require('./routes/hello');
+const insert = require('./routes/insert');
+const search = require('./routes/search');
+const getAll = require('./routes/getAll');
+const update = require('./routes/update');
 
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }))
 app.use(cors());
 
 if (process.env.NODE_ENV !== 'test') {
@@ -22,58 +28,10 @@ app.use((req, res, next) => {
 
 app.use('/', index);
 app.use('/hello', hello);
-
-// app.get("/", (req, res) => {
-//     const data = {
-//         data: {
-//             msg: "Hello World!"
-//         }
-//     };
-
-//     res.json(data);
-// });
-
-// app.get("/hello/:msg", (req, res) => {
-//     const data = {
-//         data: {
-//             msg: req.params.msg
-//         }
-//     };
-
-//     res.json(data);
-// });
-
-// app.get("/user", (req, res) => {
-//     res.json({
-//         data: {
-//             msg: "Got a GET request"
-//         }
-//     });
-// });
-
-// app.post("/user", (req, res) => {
-//     res.status(201).json({
-//         data: {
-//             msg: "Got a POST request"
-//         }
-//     });
-// });
-
-// app.put("/user", (req, res) => {
-//     res.status(204).json({
-//         data: {
-//             msg: "Got a PUT request"
-//         }
-//     });
-// });
-
-// app.delete("/user", (req, res) => {
-//     res.status(204).json({
-//         data: {
-//             msg: "Got a DELETE request"
-//         }
-//     });
-// });
+app.use('/insert', insert);
+app.use('/search', search);
+app.use('/getAll', getAll);
+app.use('/update', update);
 
 app.use((req, res, next) => {
     var err = new Error("Not Found");
