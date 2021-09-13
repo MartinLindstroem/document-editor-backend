@@ -6,7 +6,6 @@ const app = express();
 const port = process.env.PORT || 1337;
 
 const index = require('./routes/index');
-const hello = require('./routes/hello');
 const insert = require('./routes/insert');
 const search = require('./routes/search');
 const getAll = require('./routes/getAll');
@@ -27,7 +26,6 @@ app.use((req, res, next) => {
 });
 
 app.use('/', index);
-app.use('/hello', hello);
 app.use('/insert', insert);
 app.use('/search', search);
 app.use('/getAll', getAll);
