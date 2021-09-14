@@ -25,11 +25,11 @@ npm install
 ## Routes
 The API has a couple of different routes.
 
-### `/getAll`
+### GET `/getAll`
 
 Gets all of the documents in the database
 
-### `/insert`
+### POST `/insert`
 
 Creates a new document in the database
 
@@ -41,7 +41,7 @@ The following body is required
 }
 ```
 
-### `/update`
+### PUT `/update`
 
 Updates an already existing document in the database.
 
