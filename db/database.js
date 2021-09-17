@@ -10,7 +10,7 @@ const database = {
             const config = require("./config.json");
 
             dsn = `mongodb+srv://${config.username}:${config.password}
-            @cluster0.2kqjd.mongodb.net/jsramverk?retryWrites=true&w=majority`;
+@cluster0.2kqjd.mongodb.net/jsramverk?retryWrites=true&w=majority`;
         }
 
         const client = await mongo.connect(dsn, {
