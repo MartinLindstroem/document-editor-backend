@@ -1,17 +1,16 @@
 const mongo = require("mongodb").MongoClient;
-const config = require("./config.json");
 const collectionName = "docs";
 const objectId = require('mongodb').ObjectId;
 
 const database = {
     getDb: async function getDb() {
-        let dsn = `mongodb+srv://${config.username}:${config.password}
-@cluster0.2kqjd.mongodb.net/jsramverk?retryWrites=true&w=majority`;
+        let dsn = "mongodb://localhost:27017/test";
 
-        if (process.env.NODE_ENV === 'test') {
-            // dsn = `mongodb+srv://${config.username}:${config.password}
-            // @cluster0.2kqjd.mongodb.net/test?retryWrites=true&w=majority`;
-            dsn = "mongodb://localhost:27017/test";
+        if (process.env.NODE_ENV !== 'test') {
+            const config = require("./config.json");
+
+            dsn = `mongodb+srv://${config.username}:${config.password}
+            @cluster0.2kqjd.mongodb.net/jsramverk?retryWrites=true&w=majority`;
         }
 
         const client = await mongo.connect(dsn, {
