@@ -1,5 +1,7 @@
 # document-editor-backend
 
+[![Build Status](https://app.travis-ci.com/MartinLindstroem/document-editor-backend.svg?branch=main)](https://app.travis-ci.com/MartinLindstroem/document-editor-backend)
+
 This is a REST-API for creating and saving text-documents in a mongoDB database.
 
 ## Installation
