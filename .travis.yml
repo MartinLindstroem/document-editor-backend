@@ -13,7 +13,7 @@ git:
   submodules: false
 
 before_install:
-  - cp db/config.json.copy db/config.json
+  - cp db/config.json db/config.json
 
 before_script:
   - npm install
