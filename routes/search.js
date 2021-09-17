@@ -2,17 +2,18 @@ var express = require('express');
 var router = express.Router();
 const database = require("../db/database");
 
-router.get('/', async function (req, res, next) {
+router.get('/', async function (req, res) {
     const data = {
         criteria: req.body.criteria,
         projection: req.body.projection,
         limit: req.body.limit,
-    }
+    };
 
     try {
         let result = await findInCollection(
             data.criteria, data.projection, data.limit
         );
+
         console.log(result);
         res.json(result);
     } catch (err) {

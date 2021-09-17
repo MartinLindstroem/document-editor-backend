@@ -1,24 +1,12 @@
 var express = require('express');
 var router = express.Router();
 const database = require("../db/database");
-const objectId = require('mongodb').ObjectId;
+// const objectId = require('mongodb').ObjectId;
 
-router.put('/', async function (req, res, next) {
-    const filter = { _id: objectId(req.body._id) };
-    const updateDoc = {
-        name: req.body.name,
-        content: req.body.content,
-    }
+router.put('/', async function (req, res) {
+    const data = await database.updateDocument(req.body._id, req.body.name, req.body.content);
 
-    const db = await database.getDb();
-    const result = await db.collection.updateOne(filter, { $set: updateDoc });
-
-    await db.client.close();
-
-    console.log(result);
-    if (result.acknowledged) {
-        return res.status(200).json({ data: { _id: result.upsertedId, name: updateDoc.name, content: updateDoc.content } });
-    }
+    return res.status(200).json({ data });
 });
 
 module.exports = router;
