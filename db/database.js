@@ -1,13 +1,7 @@
 const mongo = require("mongodb").MongoClient;
+const config = require("./config.json");
 const collectionName = "docs";
 const objectId = require('mongodb').ObjectId;
-var config;
-
-try {
-    config = require("./config.json");
-} catch (e) {
-    console.log(e);
-}
 
 const database = {
     getDb: async function getDb() {
