@@ -10,7 +10,10 @@ const index = require("./routes/index");
 const insert = require("./routes/insert");
 const search = require("./routes/search");
 const getAll = require("./routes/getAll");
+const getAllByUser = require("./routes/getAllByUser");
 const update = require("./routes/update");
+const register = require("./routes/register");
+const login = require("./routes/login");
 
 const io = require("socket.io")(httpServer, {
     cors: {
@@ -55,7 +58,10 @@ app.use("/", index);
 app.use("/insert", insert);
 app.use("/search", search);
 app.use("/getAll", getAll);
+app.use("/getAllByUser", getAllByUser);
 app.use("/update", update);
+app.use("/register", register);
+app.use("/login", login);
 
 app.use((req, res, next) => {
     var err = new Error("Not Found");
