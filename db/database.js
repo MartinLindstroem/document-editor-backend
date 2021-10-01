@@ -1,9 +1,9 @@
 const mongo = require("mongodb").MongoClient;
-const collectionName = "docs";
+// const collectionName = "docs";
 const objectId = require('mongodb').ObjectId;
 
 const database = {
-    getDb: async function getDb() {
+    getDb: async function getDb(collectionName) {
         let dsn = "mongodb://localhost:27017/test";
 
         if (process.env.NODE_ENV !== 'test') {
@@ -26,58 +26,65 @@ const database = {
             client: client,
         };
     },
-    insertDocument: async function insertDoc(name, content) {
+    insertDocument: async function insertDoc(res, collection, body) {
         const data = {
-            name: name,
-            content: content,
+            name: body.name,
+            content: body.content,
+            created_by: body.created_by,
+            auth_users: body.auth_users
         };
 
-        const db = await this.getDb();
+        const db = await this.getDb(collection);
 
         const result = await db.collection.insertOne(data);
 
         await db.client.close();
 
         if (result.acknowledged) {
-            // itemId = result.insertedId;
-            return {
-                _id: result.insertedId,
-                name: data.name,
-                content: data.content
-            };
+            return res.status(201).json({ msg: "Document saved" });
         }
     },
 
-    updateDocument: async function updateDoc(id, name, content) {
-        const filter = { _id: objectId(id) };
+    updateDocument: async function updateDoc(res, collection, body) {
+        const filter = { _id: objectId(body._id) };
         const data = {
-            name: name,
-            content: content,
+            name: body.name,
+            content: body.content,
+            // created_by: body.created_by,
+            auth_users: body.auth_users
         };
 
-        const db = await this.getDb();
+        const db = await this.getDb(collection);
         const result = await db.collection.updateOne(filter, { $set: data });
 
         await db.client.close();
 
         if (result.acknowledged) {
-            return {
-                _id: result.upsertedId,
-                name: data.name,
-                content: data.content
-            };
+            return res.status(201).json({ msg: "Document updated" });
         }
     },
 
-    getAllDocuments: async function getAllDocs() {
-        const db = await this.getDb();
+    getAllDocuments: async function getAllDocs(collection) {
+        const db = await this.getDb(collection);
         const col = db.collection;
         const res = await col.find().toArray();
 
         await db.client.close();
 
         return res;
-    }
+    },
+
+    getAllDocumentsByUser: async function getAllDocs(collection, username) {
+        const db = await this.getDb(collection);
+        const col = db.collection;
+        const res = await col.find({
+            $or: [{ "created_by": username }, { "auth_users": username }]
+        }).toArray();
+
+        await db.client.close();
+
+        return res;
+    },
 };
 
 module.exports = database;
