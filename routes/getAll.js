@@ -4,7 +4,7 @@ const database = require("../db/database");
 
 router.get('/', async function (req, res,) {
     try {
-        let result = await database.getAllDocuments();
+        let result = await database.getAllDocuments("docs");
 
         res.json(result);
     } catch (err) {
