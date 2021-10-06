@@ -6,6 +6,14 @@ const app = express();
 const port = process.env.PORT || 1337;
 const httpServer = require("http").createServer(app);
 
+const visual = false;
+const { graphqlHTTP } = require("express-graphql");
+const {
+    GraphQLSchema
+} = require("graphql");
+
+const RootQueryType = require("./graphql/root.js");
+
 const index = require("./routes/index");
 const insert = require("./routes/insert");
 const search = require("./routes/search");
@@ -30,8 +38,6 @@ io.sockets.on("connection", function (socket) {
         socket.leave(previousRoom);
         socket.join(room);
         previousRoom = room;
-        // console.log("Joined room: ", room);
-        // console.log(io.sockets.adapter.rooms.get(room));
         socket.to(room).emit("sync");
     });
     socket.on("doc", function (data) {
@@ -53,6 +59,15 @@ app.use((req, res, next) => {
     console.log(req.path);
     next();
 });
+
+const schema = new GraphQLSchema({
+    query: RootQueryType
+});
+
+app.use("/graphql", graphqlHTTP({
+    schema: schema,
+    graphiql: visual,
+}));
 
 app.use("/", index);
 app.use("/insert", insert);
