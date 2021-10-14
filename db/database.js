@@ -74,11 +74,11 @@ const database = {
         return res;
     },
 
-    getAllDocumentsByUser: async function getAllDocs(collection, username) {
+    getAllDocumentsByUser: async function getAllDocs(collection, email) {
         const db = await this.getDb(collection);
         const col = db.collection;
         const res = await col.find({
-            $or: [{ "created_by": username }, { "auth_users": username }]
+            $or: [{ "created_by": email }, { "auth_users": email }]
         }).toArray();
 
         await db.client.close();
