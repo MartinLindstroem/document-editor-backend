@@ -22,6 +22,7 @@ const getAllByUser = require("./routes/getAllByUser");
 const update = require("./routes/update");
 const register = require("./routes/register");
 const login = require("./routes/login");
+const sendInvite = require("./routes/sendInvite");
 
 const io = require("socket.io")(httpServer, {
     cors: {
@@ -77,6 +78,7 @@ app.use("/getAllByUser", getAllByUser);
 app.use("/update", update);
 app.use("/register", register);
 app.use("/login", login);
+app.use("/sendInvite", sendInvite);
 
 app.use((req, res, next) => {
     var err = new Error("Not Found");
