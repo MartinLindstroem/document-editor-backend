@@ -5,15 +5,15 @@ const config = require("../db/config.json");
 
 const auth = {
     registerUser: async function (res, collection, body) {
-        const username = body.username;
+        const email = body.email;
         const password = body.password;
 
-        if (!username || !password) {
+        if (!email || !password) {
             return res.status(401).json({
                 errors: {
                     status: 401,
                     source: "/register",
-                    msg: "Username or password missing",
+                    msg: "email or password missing",
                 }
             });
         }
@@ -35,7 +35,7 @@ const auth = {
                 db = await database.getDb(collection);
 
                 const data = {
-                    username: body.username,
+                    email: body.email,
                     password: hash,
                 };
 
@@ -62,15 +62,15 @@ const auth = {
     },
 
     login: async function (res, body) {
-        const username = body.username;
+        const email = body.email;
         const password = body.password;
 
-        if (!username || !password) {
+        if (!email || !password) {
             return res.status(401).json({
                 errors: {
                     status: 401,
                     source: "/login",
-                    message: "Username or password is missing"
+                    message: "email or password is missing"
                 }
             });
         }
@@ -79,8 +79,9 @@ const auth = {
 
         try {
             db = await database.getDb("users");
+            // console.log(db);
 
-            const filter = { username: username };
+            const filter = { email: email };
 
             const user = await db.collection.findOne(filter);
 
@@ -122,7 +123,7 @@ const auth = {
             }
 
             if (result) {
-                let payload = { username: user.username };
+                let payload = { email: user.email };
                 let jwtToken = jwt.sign(payload, config.JWT_SECRET, { expiresIn: "24h" });
 
                 return res.json({
@@ -161,7 +162,7 @@ const auth = {
                 }
 
                 req.user = {};
-                req.user.username = decoded.username;
+                req.user.email = decoded.email;
 
                 return next();
             });
